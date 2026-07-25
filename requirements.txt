@@ -1,0 +1,10 @@
+# UZA Build — minimal, Windows-friendly dependencies.
+# DB is stdlib sqlite3, auth is stdlib hashlib/hmac — no native builds required.
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+python-multipart==0.0.20
+
+# Optional — enables LIVE AI drawing analysis (Claude). Without it, the drawing
+# intake runs in a deterministic demo/rules-based mode. To turn on live AI:
+#   pip install anthropic   and set ANTHROPIC_API_KEY, then restart.
+# anthropic>=0.40

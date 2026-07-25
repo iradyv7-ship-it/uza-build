@@ -1,0 +1,27 @@
+# UZA Build — Render.com blueprint.
+# Push this repo to GitHub, then in Render: New + → Blueprint → pick the repo.
+# Render reads this file and configures everything below automatically.
+services:
+  - type: web
+    name: uza-build
+    runtime: python
+    plan: free                       # upgrade to "starter" later for a persistent disk
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /healthz
+    autoDeploy: true
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.7
+      - key: UZA_SECRET
+        generateValue: true          # Render generates a strong session secret
+      # - key: ANTHROPIC_API_KEY     # uncomment + set in the dashboard to enable live AI
+      #   sync: false
+      # - key: UZA_DB_PATH           # with a paid plan + disk, point the DB at the disk:
+      #   value: /var/data/uza_build.db
+
+# NOTE on the free plan:
+# - The service sleeps after 15 min idle (first visit after that takes ~50s to wake).
+# - Storage is ephemeral: the demo database re-seeds on each deploy/restart.
+#   That is perfect for client demos; for real project data, upgrade the plan,
+#   add a 1GB disk mounted at /var/data, and set UZA_DB_PATH as shown above.
